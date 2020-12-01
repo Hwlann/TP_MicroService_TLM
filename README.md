@@ -11,9 +11,9 @@
 
 || Timoté | César |Loïc |
 | --------- | ----- | ----- | ----- |
-| Author-Service | | | |
-| Comment-Service | | |  |
-| Quote-Service | | |  |
-| App-Gateway | | | | 
-| Eureka-Server | | | |   
+| Author-Service | | | x |
+| Comment-Service | | | x |
+| Quote-Service | | | x |
+| App-Gateway | | | x | 
+| Eureka-Server | | | x |   
 | Hystrix | | | | 
