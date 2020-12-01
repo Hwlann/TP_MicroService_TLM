@@ -10,7 +10,7 @@
 
 
 ### Tables
-| x | Timoté | César |Loïc |
+|| Timoté | César |Loïc |
 | --------- | ----- | ----- | ----- |
 | Author-Service | | | |
 | Comment-Service | | |  |
