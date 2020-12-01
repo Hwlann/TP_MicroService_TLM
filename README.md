@@ -1,6 +1,6 @@
 # TP_MicroService_TLM
 
-#### Creators (*)
+#### Creators
 
 * MALHERBE Timoté
 * LORTET César
