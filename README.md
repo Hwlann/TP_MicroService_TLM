@@ -10,11 +10,11 @@
 
 
 ### Tables
-|     x  | Timoté | César |Loïc |
-| --------- | -----:|
-| Author-Service  |  ||  || |
-| Comment-Service     |  ||  ||  |
-| Quote-Service      |  ||  ||  |
-| App-Gateway     |  ||  ||  | 
-| Eureka-Server   |  ||  ||  |   
-| Hystrix     |  ||  ||  | 
+| x | Timoté | César |Loïc |
+| --------- | -----|
+| Author-Service | || || |
+| Comment-Service | || ||  |
+| Quote-Service | || ||  |
+| App-Gateway | || || | 
+| Eureka-Server | || || |   
+| Hystrix | || || | 
