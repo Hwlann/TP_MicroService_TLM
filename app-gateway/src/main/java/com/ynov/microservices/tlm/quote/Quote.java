@@ -1,5 +1,118 @@
 package com.ynov.microservices.tlm.quote;
 
-public class Quote {	
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
+
+import com.ynov.microservices.tlm.comment.Comment;
+
+public class Quote {	
+	/****************************************************************************************************/
+	/******************************************** VARIABLES *********************************************/
+	/****************************************************************************************************/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;	
+	@Column
+	private String content;
+	@Column
+	private Integer upVote;	
+	@Column
+	private Integer downVote;	
+	
+	private Integer author;
+	
+	@Transient
+	private HashSet<Integer> comments = new LinkedHashSet<>();
+	
+	/****************************************************************************************************/
+	/******************************************** METHODS ***********************************************/
+	/****************************************************************************************************/
+	
+	/******************************************** ID -***************************************************/
+	public Integer getId() {
+		return this.id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	/******************************************** NEW ****************************************************/
+	public boolean isNew() {
+		return this.id == null;
+	}
+
+	/******************************************** CONTENT ************************************************/
+	public String getContent() {
+		return this.content;
+	}
+	
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	/******************************************** UPVOTE *************************************************/
+	public Integer getUpVote() {
+		return this.upVote;
+	}
+
+	public void setUpVote(Integer upVote) {
+		this.upVote = upVote;
+	}
+
+	/******************************************** DOWNVOTE ************************************************/
+	public Integer getDownVote() {
+		return this.downVote;
+	}
+
+	public void setDownVote(Integer downVote) {
+		this.downVote = downVote;
+	}
+
+	/******************************************** AUTHOR **************************************************/
+	public Integer getAuthor() {
+		return this.author;
+	}
+
+	public void setAuthor(Integer author) {
+		this.author = author;
+	}
+	
+	/******************************************** COMMENTS **************************************************/
+	/*
+	public Set<Integer> getCommentsInternal() {
+		if (this.comments == null) {
+			this.comments = new HashSet<>();
+		}
+		return this.comments;
+	}
+	public void setCommentsInternal(Collection<Comment> comments) {
+		this.comments = new LinkedHashSet<>(comments);
+	}	
+	
+	public List<Comment> getComments() {
+		List<Comment> sortedComments = new ArrayList<>(getCommentsInternal());
+		PropertyComparator.sort(sortedComments, new MutableSortDefinition("date", false, false));
+		return Collections.unmodifiableList(sortedComments);
+	}
+
+	public void addComment(Comment comment) {
+		getCommentsInternal().add(comment);
+		comment.setQuote(this.getId());
+	}
+	*/
 }
