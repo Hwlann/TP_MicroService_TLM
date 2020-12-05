@@ -40,8 +40,7 @@ public class AuthorController {
 	}
 	
 	@GetMapping("/authors/findByPseudo/{pseudo}")
-	public Iterable<Author> findOwnerByLastName(@PathVariable("lastName") String pseudo) throws InterruptedException {
-		//Thread.sleep(1000);
+	public Iterable<Author> findByPseudo(@PathVariable("pseudo") String pseudo) throws InterruptedException {
 		return authors.findByPseudo(pseudo);
 	}
 	
@@ -73,8 +72,8 @@ public class AuthorController {
 	/****************************************************************************************************/
 	/******************************************** DELETE MAPPING ****************************************/
 	/****************************************************************************************************/
-	@DeleteMapping("/authors/{id}")
-	public void deleteAuthor(@PathVariable("id") Integer id){
+	@DeleteMapping("/authors/remove")
+	public void deleteAuthor(@RequestParam("id") Integer id){
 			authors.deleteById(id);
 	}
 	

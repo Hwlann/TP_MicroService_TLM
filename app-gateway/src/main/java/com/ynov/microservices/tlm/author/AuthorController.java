@@ -1,11 +1,12 @@
 package com.ynov.microservices.tlm.author;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,19 +63,20 @@ public class AuthorController {
 	}
 	
 	@PostMapping("/authors/{authorId}/edit")
-	public String processUpdateOwnerForm(@Valid Author author, BindingResult result,
-			@PathVariable("authorId") int authorId) {
-		if (result.hasErrors()) {
-			return "500 : author not found"; // Error
-		}
-		else {
-			author.setId(authorId);
-			this.authors.save(author);
-			return "redirect:/authors/{authorId}";
-		}
+	public String updateAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("pseudo") String pseudo) {
+		Author author = authors.findById(authorId);
+		author.setPseudo(pseudo);
+		authors.save(author);
+		return "redirect:/authors/" + authorId;			
 	}
 	
 	/****************************************************************************************************/
 	/******************************************** DELETE MAPPING ****************************************/
-	/****************************************************************************************************/	
+	/****************************************************************************************************/
+	@DeleteMapping("authors/remove")
+	public String deleteAuthor(@RequestParam("id") Integer id) {
+		authors.deleteById(id);
+		return null;		
+	}
+	
 }
