@@ -11,59 +11,65 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "quotes")
 public class Quote {	
+	
+	/****************************************************************************************************/
+	/******************************************** VARIABLES *********************************************/
+	/****************************************************************************************************/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
+	private Integer id;	
 	@Column
-	private String quote;
-
+	private String content;
 	@Column
-	private Integer upVote;
-	
+	private Integer upVote;	
 	@Column
-	private Integer downVote;
+	private Integer downVote;	
 	
 	private Integer author;
 	
-	/*
-	 * METHODS
-	 */
+	/****************************************************************************************************/
+	/******************************************** METHODS ***********************************************/
+	/****************************************************************************************************/
 	
+	/******************************************** ID -***************************************************/
 	public Integer getId() {
-		return id;
+		return this.id;
 	}
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getQuote() {
-		return quote;
+	/******************************************** CONTENT ************************************************/
+	public String getContent() {
+		return this.content;
+	}
+	
+	public void setContent(String content) {
+		this.content = content;
 	}
 
-	public void setQuote(String quote) {
-		this.quote = quote;
-	}
-
+	/******************************************** UPVOTE ************************************************/
 	public Integer getUpVote() {
-		return upVote;
+		return this.upVote;
 	}
 
 	public void setUpVote(Integer upVote) {
 		this.upVote = upVote;
 	}
 
+	/******************************************** DOWNVOTE ************************************************/
 	public Integer getDownVote() {
-		return downVote;
+		return this.downVote;
 	}
 
 	public void setDownVote(Integer downVote) {
 		this.downVote = downVote;
 	}
 
+	/******************************************** AUTHOR ************************************************/
 	public Integer getAuthor() {
-		return author;
+		return this.author;
 	}
 
 	public void setAuthor(Integer author) {

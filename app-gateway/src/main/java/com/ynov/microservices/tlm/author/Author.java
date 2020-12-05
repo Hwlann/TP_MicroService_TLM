@@ -6,25 +6,32 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
-@Entity
-@Table(name = "authors")
 public class Author {
+	
+	/****************************************************************************************************/
+	/******************************************** VARIABLES *********************************************/
+	/****************************************************************************************************/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Integer id;
-	
+	private Integer id;	
+
 	@Column(name = "pseudo")
+	@NotEmpty
 	private String pseudo;
 	
 	private HashSet<Integer> quotes;	
 	
+	/****************************************************************************************************/
+	/******************************************** METHODS ***********************************************/
+	/****************************************************************************************************/
+	
+	/******************************************** QUOTES ************************************************/
 	protected Set<Integer> getQuotesInternal() {
 		if (this.quotes == null) {
 			this.quotes = new HashSet<>();
@@ -45,6 +52,7 @@ public class Author {
 			getQuotesInternal().add(quoteId);
 	}
 	
+	/******************************************** ID *****************************************************/
 	public Integer getId() {
 		return id;
 	}
@@ -52,6 +60,8 @@ public class Author {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	/******************************************** PSEUDO *************************************************/
 	public String getPseudo() {
 		return pseudo;
 	}

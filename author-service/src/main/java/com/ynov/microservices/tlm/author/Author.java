@@ -11,20 +11,31 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "authors")
 public class Author {
+	
+	/****************************************************************************************************/
+	/******************************************** VARIABLES *********************************************/
+	/****************************************************************************************************/
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Integer m_id;
-	
+	private Integer id;	
+
 	@Column(name = "pseudo")
-	private String m_pseudo;
+	@NotEmpty
+	private String pseudo;
 	
 	private HashSet<Integer> quotes;	
 	
+	/****************************************************************************************************/
+	/******************************************** METHODS ***********************************************/
+	/****************************************************************************************************/
+	
+	/******************************************** QUOTES ************************************************/
 	protected Set<Integer> getQuotesInternal() {
 		if (this.quotes == null) {
 			this.quotes = new HashSet<>();
@@ -45,21 +56,21 @@ public class Author {
 			getQuotesInternal().add(quoteId);
 	}
 	
-	/*
-	 * METHODS
-	 */
+	/******************************************** ID *****************************************************/
 	public Integer getId() {
-		return m_id;
+		return id;
 	}
 	
 	public void setId(Integer id) {
-		m_id = id;
+		this.id = id;
 	}
+	
+	/******************************************** PSEUDO *************************************************/
 	public String getPseudo() {
-		return m_pseudo;
+		return pseudo;
 	}
 	
 	public void setPseudo(String pseudo) {
-		m_pseudo = pseudo;
+		this.pseudo = pseudo;
 	}
 }

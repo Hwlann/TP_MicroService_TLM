@@ -2,11 +2,12 @@ package com.ynov.microservices.tlm.quote;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,55 +16,72 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class QuoteController {
 	
-	@Autowired
 	private QuoteRepository quotes;
 	
 	public QuoteController(QuoteRepository quotes) {
 		this.quotes = quotes;
 	}
 	
-	/*
-	 * GET MAPPING 
-	 */
-	@GetMapping("/quote/")
-	public Iterable<Quote> getQuote(){
-			return quotes.findAll();
+	/****************************************************************************************************/
+	/******************************************** GET MAPPING *******************************************/
+	/****************************************************************************************************/	
+	@GetMapping("/quotes")
+	public Iterable<Quote> getQuotes() {
+		return quotes.findAll();
 	}
 	
-	@GetMapping("/quote/{id}")
-	public Optional<Quote> getQuote(@PathVariable("id") Integer id){
-			return quotes.findById(id);
+	@GetMapping("/quotes/{id}")
+	public Optional<Quote> getQuoteById(@PathVariable("id") Integer id) {
+		return quotes.findById(id);
 	}
 	
-	/*
-	@GetMapping("/quote/from/{author}")
-	public Iterable<Quote> getQuoteById(@PathVariable("authorId") Integer authorId){
-			return quotes.findByIds(authorId);
+	/****************************************************************************************************/
+	/******************************************** POST MAPPING ******************************************/
+	/****************************************************************************************************/
+	@PostMapping("/quotes") 
+	public Quote addQuote(@RequestBody Quote quote) {
+		return this.quotes.save(quote);
 	}
-	*/
 	
-	/*
-	 * POST MAPPING 
-	 */
-	/*
-	@PostMapping("/quote/")
-	public void addQuote(@RequestParam("authorId") Integer id, @RequestParam("text") String text){
-			Quote quote = new Quote();
-			quote.setAuthorId(id);
-			quote.setQuote(text);
+	@PostMapping("/quotes/new")
+	public Quote addQuote() {
+		Quote quote = new Quote();
+		return quotes.save(quote);
+	}
+	
+	@PostMapping("/quotes/{quoteId}/addComment")
+	public void addVisitToPet(@PathVariable("quoteId") Integer quoteId, @RequestParam("commentId") Integer commentId) {
+		Optional<Quote> quoteOpt = quotes.findById(quoteId);
+		if (quoteOpt.isPresent()) {
+			Quote quote = quoteOpt.get();
+			quote.addComment(commentId);
 			quotes.save(quote);
+		}
+
 	}
 	
-	/*
-	 * DELETE MAPPING 
-	 */
-	@DeleteMapping("/quote/{id}")
-	public void deleteQuote(@PathVariable("id") Integer id){
+	/****************************************************************************************************/
+	/******************************************** PUT MAPPING *******************************************/
+	/****************************************************************************************************/		
+	@PutMapping("/quotes/{id}")
+	public Quote editQuote(@PathVariable("id") Integer id, @RequestParam("content") String content,
+			@RequestParam("upVote") Integer upVote, @RequestParam("downVote") Integer downVote) {
+		Optional<Quote> quoteOpt = quotes.findById(id);
+		if (quoteOpt.isPresent()) {
+			Quote quote = quoteOpt.get();
+			quote.setContent(content);
+			quote.setUpVote(upVote);
+			quote.setDownVote(downVote);
+			quotes.save(quote);
+		}
+		return quoteOpt.get();
+	}
+	
+	/****************************************************************************************************/
+	/******************************************** DELETE MAPPING ****************************************/
+	/****************************************************************************************************/	
+	@DeleteMapping("/quotes/{id}")
+	public void deletePet(@PathVariable("id") Integer id) {
 		quotes.deleteById(id);
-	}
-	
-	@DeleteMapping("/quotes/")
-	public void deleteQuotes(){
-		quotes.deleteAll();
 	}
 }

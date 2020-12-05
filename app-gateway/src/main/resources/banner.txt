@@ -1,14 +1,13 @@
-
-
-              |\      _,,,--,,_
-             /,`.-'`'   ._  \-;;,_
-  _______ __|,4-  ) )_   .;.(__`'-'__     ___ __    _ ___ _______
- |       | '---''(_/._)-'(_\_)   |   |   |   |  |  | |   |       |
- |    _  |    ___|_     _|       |   |   |   |   |_| |   |       | __ _ _
- |   |_| |   |___  |   | |       |   |   |   |       |   |       | \ \ \ \
- |    ___|    ___| |   | |      _|   |___|   |  _    |   |      _|  \ \ \ \
- |   |   |   |___  |   | |     |_|       |   | | |   |   |     |_    ) ) ) )
- |___|   |_______| |___| |_______|_______|___|_|  |__|___|_______|  / / / /
- ==================================================================/_/_/_/
-
+                                                                                                                                    
+                        YP   vDQQBBBJ       Br  .DBBY     rQQQi                     ::           i.                                                   
+                      UQBB   5B:  ..       BB  BBdirBB   BBJiuBB                    Pg           Bu                                                   
+                      :.QB   PB:UDK.      rB.  .    IB  QB     Bj      .   .  ..        .  .:               rXBi .     . r  :.                        
+                        BB   BBBv:LBQ    .BY      .QBv  BY     BB      BBEBBBBBBB   Bq  BBQBBB. :B:       BBj:BB BB   BB BBBBBB                       
+                        BE   vr    7B    BZ     iBQP    BY     BB      BBS XB  .B:  Qj  BBI  B2 :B.      YQBr    iB: iB. BQ   BB                      
+                        Bs         XB   BQ     bB:      BQ     Bv      BB  sB   BS  Br  BQ   B2 7B         rKBB   QB BE  BX   BB                      
+                      .rBB:  BQ. .EBs  BB      BB.vqbI  .BD. iQB       Bg  iB.  QB  Bu  B5   BB 7B.      X.  iQI   BBB   BB  iQP                      
+                      5BgMB  .BBBQB.  YB       IMdPXPB.  .BBBB5        BP  .Bi  qB  M.  BY   ZB .g       DBBBB1    :B    BBQBBL                       
+                                                                                                                         Bg                           
+                                                                                                                         BB                           
+                                                                                                                         .                                                                                                                
 :: Built with Spring Boot :: ${spring-boot.version}
