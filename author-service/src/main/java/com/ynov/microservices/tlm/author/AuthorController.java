@@ -39,6 +39,11 @@ public class AuthorController {
 			return authors.findById(id);
 	}
 	
+	@GetMapping("/authors/findByPseudo/{pseudo}")
+	public Iterable<Author> findOwnerByLastName(@PathVariable("lastName") String pseudo) throws InterruptedException {
+		//Thread.sleep(1000);
+		return authors.findByPseudo(pseudo);
+	}
 	
 	/****************************************************************************************************/
 	/******************************************** POST MAPPING ******************************************/

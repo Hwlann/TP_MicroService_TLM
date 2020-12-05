@@ -1,11 +1,15 @@
 package com.ynov.microservices.tlm.author;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
+
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -31,54 +35,30 @@ public class AuthorController {
 	/****************************************************************************************************/
 	/******************************************** GET MAPPING *******************************************/
 	/****************************************************************************************************/
-	
-	@GetMapping("/authors/find")
-	public String initFind(Map<String, Object> model) throws InterruptedException {
-		//Thread.sleep(1000); // Test Hystrix circuit breaker
-		model.put("author", new Author());
-		return "authors/findAuthor";
-	}
-	
-	public String initFindFallback(Map<String, Object> model) {
-		System.out.println("Fallback Activated");
-		model.put("author", new Author());
-		return "authors/findAuthor";
-	}
-
 	@GetMapping("/authors")
-	public String processFind(Author author, BindingResult result, Map<String, Object> model) {
-
-		// find authors by last name
-		Collection<Author> results = this.authors.findByPseudo(author.getPseudo());
-		if (results.isEmpty()) {
-			// no authors found
-			result.rejectValue("Pseudo", "notFound", "not found");
-			return "authors/findAuthors";
-		}
-		else if (results.size() == 1) {
-			// 1 author found
-			author = results.iterator().next();
-			return "redirect:/authors/" + author.getId();
-		}
-		else {
-			// multiple authors found
-			model.put("selections", results);
-			return "authors/authorsList";
-		}
+	public String findAuthors(Map<String, Object> model ) {
+		Collection<Author> results = this.authors.findAll();
+		model.put("selections", results);
+		return "redirect:/authors";
 	}
 	
 	/****************************************************************************************************/
 	/******************************************** POST MAPPING ******************************************/
 	/****************************************************************************************************/	
 	@PostMapping("/authors/new")
-	public String processCreation(@Valid Author author, BindingResult result) {
-		if (result.hasErrors()) {
-			return "500 : Error binding result"; // Error
+	public String addAuthor(@RequestParam("pseudo") String pseudo) {
+		Collection<Author> authorList = authors.findAll();
+		
+		Author author = new Author();
+		author.setPseudo(pseudo);
+		if(authorList.isEmpty()) {
+			author.setId(1);
 		}
 		else {
-			this.authors.save(author);
-			return "redirect:/authors/" + author.getId();
+			author.setId(authorList.size()+1);
 		}
+		this.authors.save(author);
+	return "redirect:/authors/" + author.getId();
 	}
 	
 	@PostMapping("/authors/{authorId}/edit")

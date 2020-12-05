@@ -36,7 +36,6 @@ public class QuoteController {
 	public Author findOwner(@PathVariable("authorId") int authorId) {
 		return this.authors.findById(authorId);
 	}
-	
 	/******************************************** BINDER ****************************************************/
 	@InitBinder("author")
 	public void initOwnerBinder(WebDataBinder dataBinder) {
