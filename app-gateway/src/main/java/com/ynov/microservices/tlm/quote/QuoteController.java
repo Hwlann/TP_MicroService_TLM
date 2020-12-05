@@ -48,7 +48,7 @@ public class QuoteController {
 	@PostMapping("/quote/")
 	public void addQuote(@RequestParam("authorId") Integer id, @RequestParam("text") String text){
 			Quote quote = new Quote();
-			quote.setAuthorId(id);
+			quote.setAuthor(id);
 			quote.setQuote(text);
 			quotes.save(quote);
 	}

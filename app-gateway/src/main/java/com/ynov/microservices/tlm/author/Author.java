@@ -18,10 +18,10 @@ public class Author {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Integer m_id;
+	private Integer id;
 	
 	@Column(name = "pseudo")
-	private String m_pseudo;
+	private String pseudo;
 	
 	private HashSet<Integer> quotes;	
 	
@@ -45,21 +45,18 @@ public class Author {
 			getQuotesInternal().add(quoteId);
 	}
 	
-	/*
-	 * METHODS
-	 */
 	public Integer getId() {
-		return m_id;
+		return id;
 	}
 	
 	public void setId(Integer id) {
-		m_id = id;
+		this.id = id;
 	}
 	public String getPseudo() {
-		return m_pseudo;
+		return pseudo;
 	}
 	
 	public void setPseudo(String pseudo) {
-		m_pseudo = pseudo;
+		this.pseudo = pseudo;
 	}
 }

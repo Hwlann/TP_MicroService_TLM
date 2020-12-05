@@ -24,7 +24,7 @@ public class Quote {
 	@Column
 	private Integer downVote;
 	
-	private Integer authorId;
+	private Integer author;
 	
 	/*
 	 * METHODS
@@ -62,11 +62,11 @@ public class Quote {
 		this.downVote = downVote;
 	}
 
-	public Integer getAuthorId() {
-		return authorId;
+	public Integer getAuthor() {
+		return author;
 	}
 
-	public void setAuthorId(Integer authorId) {
-		this.authorId = authorId;
+	public void setAuthor(Integer author) {
+		this.author = author;
 	}
 }
