@@ -63,5 +63,4 @@ public class Comment {
 	public void setContent(String text) {
 		this.content = text;
 	}	
-	
 }
