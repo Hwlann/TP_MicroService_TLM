@@ -1,5 +1,6 @@
 package com.ynov.microservices.tlm.comment;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "comments")
 public class Comment {
@@ -18,9 +21,9 @@ public class Comment {
 	/****************************************************************************************************/
 	/******************************************** VARIABLES *********************************************/
 	/****************************************************************************************************/
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@Column(name = "commment_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate date;	
 	@Column
 	private String content;
 	@Column
@@ -32,12 +35,18 @@ public class Comment {
 	/******************************************** METHODS ***********************************************/
 	/****************************************************************************************************/
 	
-	/******************************************** ID -***************************************************/	
-	public Integer getId() {
-		return id;
+	/******************************************** CONSTRUCTOR *******************************************/
+	public Comment() {
+		this.date = LocalDate.now();
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	
+	/******************************************** DATE ***************************************************/	
+	public LocalDate getDate() {
+		return this.date;
+	}
+
+	public void setDate(LocalDate date) {
+		this.date = date;
 	}
 	
 	/******************************************** QUOTE ***************************************************/	

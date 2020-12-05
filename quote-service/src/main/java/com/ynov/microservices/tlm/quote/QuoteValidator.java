@@ -17,12 +17,9 @@ public class QuoteValidator implements Validator {
 			errors.rejectValue("quote", REQUIRED, REQUIRED);
 		}
 	}
-
-	/**
-	 * This Validator validates *just* Pet instances
-	 */
+	
 	@Override
-	public boolean supports(Class<?> clazz) {
-		return Quote.class.isAssignableFrom(clazz);
+	public boolean supports(Class<?> T) {
+		return Quote.class.isAssignableFrom(T);
 	}
 }
