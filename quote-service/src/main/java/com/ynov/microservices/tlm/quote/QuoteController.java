@@ -25,14 +25,14 @@ public class QuoteController {
 		// Create some Quotes
 		Quote quote = new Quote();
 		quote.setId(1);
-		quote.setAuthor(0);
+		quote.setAuthor(1);
 		quote.setContent("Bonsoir Jacquie");
 		quote.setUpVote(0);
 		quote.setDownVote(0);
 		quotes.save(quote);
 		
 		quote.setId(2);
-		quote.setAuthor(0);
+		quote.setAuthor(1);
 		quote.setContent("Bonsoir Michel");
 		quote.setUpVote(0);
 		quote.setDownVote(0);

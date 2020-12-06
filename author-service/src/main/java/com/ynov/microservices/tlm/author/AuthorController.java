@@ -45,7 +45,7 @@ public class AuthorController {
 	}
 	
 	@GetMapping("/authors/pseudo/{pseudo}")
-	public Iterable<Author> findByPseudo(@PathVariable("pseudo") String pseudo) throws InterruptedException {
+	public Collection<Author> findByPseudo(@PathVariable("pseudo") String pseudo) throws InterruptedException {
 		return authors.findByPseudo(pseudo);
 	}
 	

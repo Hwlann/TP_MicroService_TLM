@@ -1,23 +1,14 @@
 package com.ynov.microservices.tlm.quote;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-
-import com.ynov.microservices.tlm.comment.Comment;
 
 public class Quote {	
 	/****************************************************************************************************/
@@ -32,7 +23,7 @@ public class Quote {
 	private Integer upVote;	
 	@Column
 	private Integer downVote;	
-	
+
 	private Integer author;
 	
 	@Transient
