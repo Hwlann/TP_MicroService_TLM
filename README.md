@@ -7,11 +7,9 @@
 * TOURNATORY Loïc
                 
 # Architecture
-![archi_micro_service](https://your-copied-image-address)
+![archi_micro_service](https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fliquipedia.net%2Fcommons%2Fimages%2F6%2F63%2FWIP-logo.png&f=1&nofb=1)
 
-# Root
-
-
+# Routes
 ## Author-Service:
 #### GET
 #### POST
@@ -23,21 +21,32 @@
 - /comments
 - /comments/{id}
 - /comments/{author} ***WIP***
-- /comments/{quote} ***WIP***
+- /comments/{quote}  ***WIP***
 #### POST
 - /comments/new
 { String Author = "Anonymous", String Content }
 - /comments/
 { Comment comment }
 #### PUT
-- /comment/{id}/edit
+- /comments/{id}/edit
 { String Content }
 #### DELETE
-- /comment/{id}
+- /comments/{id}
 
 ## Quote-Service:
 #### GET
+- /quotes
+- /quotes/{id}
+- /quotes/{author} ***WIP***
 #### POST
+- /quotes/new
+{ String Content }
+- /quotes/
+{ Quote quote }
+- /quotes/{id}/add-comment/
+{ int comment_id }
 #### PUT
+- /quotes/{id}/edit
+{ String Content }
 #### DELETE
-
+- /quotes/{id}
