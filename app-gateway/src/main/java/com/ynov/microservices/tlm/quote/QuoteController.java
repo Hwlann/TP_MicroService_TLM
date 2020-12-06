@@ -76,7 +76,7 @@ public class QuoteController {
 		Author author = new Author();
 		Quote quote = new Quote();
 		Integer authorId = 0;
-		
+		/*
 		if(!authorList.isEmpty()) {			
 			Iterator<Author> iterator = authorList.iterator();
 			while(iterator.hasNext()) {
@@ -86,6 +86,12 @@ public class QuoteController {
 					break;
 				}
 			}
+		}
+		*/
+		Optional<Author> authorOpt = authors.findPseudo(pseudo);
+		if (authorOpt.isPresent()) {
+			author = authorOpt.get();
+			authorId = author.getId();
 		}
 		
 		if(authorId == 0){

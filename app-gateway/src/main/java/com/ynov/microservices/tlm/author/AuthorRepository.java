@@ -1,6 +1,7 @@
 package com.ynov.microservices.tlm.author;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,4 +27,7 @@ public interface AuthorRepository {
 	
 	@DeleteMapping("/authors/{id}")
 	void deleteById(@RequestParam("id") Integer id);
+	
+	@GetMapping("/authors/exact-pseudo/{pseudo}")
+	Optional<Author> findPseudo(@PathVariable("pseudo") String pseudo);
 }

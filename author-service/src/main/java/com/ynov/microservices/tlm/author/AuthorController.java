@@ -49,6 +49,11 @@ public class AuthorController {
 		return authors.findByPseudo(pseudo);
 	}
 	
+	@GetMapping("/authors/exact-pseudo/{pseudo}")
+	public Optional<Author> findPseudo(@PathVariable("pseudo") String pseudo) throws InterruptedException {
+		return authors.findPseudo(pseudo);
+	}
+	
 	/****************************************************************************************************/
 	/******************************************** POST MAPPING ******************************************/
 	/****************************************************************************************************/
