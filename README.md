@@ -78,3 +78,21 @@
 #### PUT
 #### DELETE
 - /authors/{id}
+
+### Quotes
+#### GET ***WIP***
+- /quotes
+- /quotes/{id}
+- /quotes/author/{author_id}
+#### POST
+- /quotes/new
+{ String Content }
+- /quotes/{id}/add-comment/
+{ int comment_id }
+#### PUT
+- /quotes/{id}/edit/content
+{ String Content }
+- /quotes/{id}/edit/upvote
+- /quotes/{id}/edit/downvote
+#### DELETE
+- /quotes/{id}
