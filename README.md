@@ -12,9 +12,19 @@
 # Routes
 ## Author-Service:
 #### GET
+- /authors
+- /authors/{id}
+- /authors/pseudo/{pseudo}
 #### POST
+- /authors/new
+{ String pseudo }
+- /authors
+{ Author author }
+- /authors/{authorsId}/add-quote
+{ int quoteId }
 #### PUT
 #### DELETE
+- /authors/{id}
 
 ## Comment-Service: 
 #### GET
