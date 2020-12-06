@@ -62,3 +62,19 @@
 - /quotes/{id}/edit/downvote
 #### DELETE
 - /quotes/{id}
+
+## App-Gateway:
+### Authors
+#### GET ***WIP***
+#### GET
+- /authors
+- /authors/{id}
+- /authors/pseudo/{pseudo}
+#### POST
+- /authors/new
+{ String pseudo }
+- /authors/{authordId}/edit
+{ String pseudo }
+#### PUT
+#### DELETE
+- /authors/{id}
