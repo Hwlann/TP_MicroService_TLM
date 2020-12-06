@@ -2,17 +2,16 @@ package com.ynov.microservices.tlm.author;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
-
-import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.ynov.microservices.tlm.quote.QuoteRepository;
+
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -21,10 +20,12 @@ public class AuthorController {
 
 	/******************************************** VARIABLES ********************************************/
 	private final AuthorRepository authors;
+	private final QuoteRepository quotes;
 	
 	/******************************************** CONSTRUCTOR ******************************************/
-	public AuthorController(AuthorRepository authors) {
+	public AuthorController(AuthorRepository authors, QuoteRepository quotes) {
 		this.authors = authors;
+		this.quotes = quotes;
 	}
 	
 	/****************************************** BINDER **************************************************/
@@ -41,6 +42,12 @@ public class AuthorController {
 		Collection<Author> results = this.authors.findAll();
 		model.put("selections", results);
 		return "redirect:/authors";
+	}
+	
+	@GetMapping("/authors/{authorId}/quotes")
+	public String findAuthorsQuotes() {
+		
+		return"";
 	}
 	
 	/****************************************************************************************************/

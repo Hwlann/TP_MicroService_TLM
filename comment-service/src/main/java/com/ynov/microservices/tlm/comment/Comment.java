@@ -21,6 +21,9 @@ public class Comment {
 	/****************************************************************************************************/
 	/******************************************** VARIABLES *********************************************/
 	/****************************************************************************************************/
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;		
 	@Column(name = "commment_date")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate date;	
@@ -40,7 +43,16 @@ public class Comment {
 		this.date = LocalDate.now();
 	}
 	
-	/******************************************** DATE ***************************************************/	
+	/******************************************** ID ***************************************************/
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	
 	public LocalDate getDate() {
 		return this.date;
 	}

@@ -24,6 +24,12 @@ public class AuthorController {
 	/******************************************** CONTRUCTOR *******************************************/
 	public AuthorController(AuthorRepository authors) {
 		this.authors = authors;
+		
+		// Create anonymous Author with id = 0;
+		Author author = new Author();
+		author.setId(0);
+		author.setPseudo("Anonymous");
+		authors.save(author);
 	}
 	
 	/****************************************************************************************************/

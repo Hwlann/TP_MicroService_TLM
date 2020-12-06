@@ -1,5 +1,8 @@
 package com.ynov.microservices.tlm.quote;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.util.StringUtils;
 
 import com.ynov.microservices.tlm.author.Author;
@@ -75,18 +79,29 @@ public class QuoteController {
 	}
 	
 	@PostMapping("/quotes/new")
-	public String processCreation(Author author, @Valid Quote quote, BindingResult result, ModelMap model) {
-		if (StringUtils.hasLength(quote.getContent()) && quote.isNew()) {
-			result.rejectValue("name", "duplicate", "already exists");
+	public String newQuote(@RequestParam("pseudo") String pseudo, @RequestParam("content") String content) {
+		Collection<Quote> quoteList = quotes.findAll();
+		Collection<Author> authorList = authors.findByPseudo(pseudo);
+		
+		Iterator<Author> iterator = authorList.iterator();
+		Integer authorId = 0;
+		while(iterator.hasNext()) {
+			if(iterator.next().getPseudo() == pseudo) {
+				authorId = iterator.next().getId();
+				break;
+			}
 		}
-		author.addQuote(quote.getId());
-		if (result.hasErrors()) {
-			model.put("quote", quote);
-			return "500 : Quote id not valid";
+				
+		Quote quote = new Quote();
+		quote.setContent(content);
+		if(quoteList.isEmpty()) {
+			quote.setId(1);
 		}
 		else {
-			this.quotes.save(quote);
-			return "redirect:/quotes/{quoteId}";
+			quote.setId(quoteList.size()+1);
 		}
+		quote.setAuthor(authorId);
+		this.quotes.save(quote);
+	return "redirect:/quotes/" + quote.getId();
 	}
 }
