@@ -12,12 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(value = "author-service")
 public interface AuthorRepository {
-
-	@GetMapping("/authors/findByPseudo/{pseudo}")
+	@GetMapping("/authors/pseudo/{pseudo}")
 	Collection<Author> findByPseudo(@PathVariable("pseudo") String pseudo);
 	
 	@GetMapping("/authors")
-	Collection<Author> findAll();
+	Iterable<Author> findAll();
 	
 	@GetMapping("/authors/{id}")
 	public Author findById(@PathVariable("id") Integer id);
@@ -25,6 +24,6 @@ public interface AuthorRepository {
 	@PostMapping("/authors/")
 	void save(@RequestBody Author author);
 	
-	@DeleteMapping("/authors/remove")
+	@DeleteMapping("/authors/{id}")
 	void deleteById(@RequestParam("id") Integer id);
 }

@@ -3,13 +3,13 @@ package com.ynov.microservices.tlm.comment;
 import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/")
 public class CommentController {
 
-	@Autowired
 	private CommentRepository comments;
 	
 	public CommentController(CommentRepository comments) {
 		this.comments = comments;
+		
+		Comment comment = new Comment();
+		comment.setId(1);
+		comment.setAuthor("César");
+		comment.setContent("RTFM");
+		comment.setQuote(0);
+		comments.save(comment);
+		
+		comment.setId(2);
+		comment.setAuthor("Loïc");
+		comment.setContent("RTFM");
+		comment.setQuote(0);
+		comments.save(comment);		
 	}
 	
 	/****************************************************************************************************/
@@ -38,9 +50,14 @@ public class CommentController {
 		return comments.findById(id);
 	}
 	
-	@GetMapping("/comments/getCommentByQuote/{quote}")
+	@GetMapping("/comments/quotes/{quote}")
 	public Iterable<Comment> getCommentByQuote(@PathVariable("quote") Integer quote) {
 		return comments.findByQuote(quote);
+	}
+	
+	@GetMapping("/comments/author/{author}")
+	public Iterable<Comment> getCommentByQuote(@PathVariable("author") String author) {
+		return comments.findByAuthor(author);
 	}
 	
 	/****************************************************************************************************/
@@ -65,6 +82,11 @@ public class CommentController {
 		comment.setContent(content);
 		comment.setQuote(0);
 		return comments.save(comment);
+	}
+	
+	@PostMapping("/comments/")
+	public Comment save(@RequestBody Comment comment){
+			return comments.save(comment);
 	}
 	
 	/****************************************************************************************************/

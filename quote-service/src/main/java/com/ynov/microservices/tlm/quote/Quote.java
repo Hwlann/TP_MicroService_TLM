@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
@@ -26,10 +25,9 @@ public class Quote {
 	private Integer upVote;	
 	@Column
 	private Integer downVote;	
-	
+	@Column
 	private Integer author;
-	
-	@Transient
+	@Column
 	private HashSet<Integer> comments = new LinkedHashSet<>();
 	
 	/****************************************************************************************************/
@@ -84,7 +82,7 @@ public class Quote {
 	/******************************************** COMMENTS **************************************************/
 	public HashSet<Integer> getComments() {
 		if (this.comments == null) {
-			this.comments = new HashSet<>();
+			this.comments = new LinkedHashSet<>();
 		}
 		return this.comments;
 	}

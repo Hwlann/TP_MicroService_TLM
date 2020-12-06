@@ -21,6 +21,22 @@ public class QuoteController {
 	/******************************************** CONSTRUCTOR ******************************************/
 	public QuoteController(QuoteRepository quotes) {
 		this.quotes = quotes;
+		
+		// Create some Quotes
+		Quote quote = new Quote();
+		quote.setId(1);
+		quote.setAuthor(0);
+		quote.setContent("Bonsoir Jacquie");
+		quote.setUpVote(0);
+		quote.setDownVote(0);
+		quotes.save(quote);
+		
+		quote.setId(2);
+		quote.setAuthor(0);
+		quote.setContent("Bonsoir Michel");
+		quote.setUpVote(0);
+		quote.setDownVote(0);
+		quotes.save(quote);
 	}
 	
 	/****************************************************************************************************/
@@ -36,7 +52,7 @@ public class QuoteController {
 		return quotes.findById(id);
 	}
 	
-	@GetMapping("/quotes/{author}/quotes")
+	@GetMapping("/quotes/author/{author}")
 	public Iterable<Quote> getQuoteByAuthor(@PathVariable("author") Integer author) {
 		return quotes.findByAuthor(author);
 	}
@@ -44,8 +60,8 @@ public class QuoteController {
 	/****************************************************************************************************/
 	/******************************************** POST MAPPING ******************************************/
 	/****************************************************************************************************/
-	@PostMapping("/quotes") 
-	public Quote addQuote(@RequestBody Quote quote) {
+	@PostMapping("/quotes/") 
+	public Quote save(@RequestBody Quote quote) {
 		return this.quotes.save(quote);
 	}
 	
@@ -66,20 +82,20 @@ public class QuoteController {
 		return quotes.save(quote);
 	}
 	
-	@PostMapping("/quotes/{quoteId}/addComment")
-	public void addVisitToPet(@PathVariable("quoteId") Integer quoteId, @RequestParam("commentId") Integer commentId) {
-		Optional<Quote> quoteOpt = quotes.findById(quoteId);
+	@PostMapping("/quotes/{id}/add-comment")
+	public Quote addCommentToQuote(@PathVariable("id") Integer id, @RequestParam("commentId") Integer commentId) {
+		Optional<Quote> quoteOpt = quotes.findById(id);
 		if (quoteOpt.isPresent()) {
 			Quote quote = quoteOpt.get();
 			quote.addComment(commentId);
 			quotes.save(quote);
 		}
-
+		return quoteOpt.get();
 	}
 	
 	/****************************************************************************************************/
 	/******************************************** PUT MAPPING *******************************************/
-	/****************************************************************************************************/		
+	/****************************************************************************************************/	
 	@PutMapping("/quotes/{id}/edit/content")
 	public Quote editQuoteContent(@PathVariable("id") Integer id, @RequestParam("content") String content) {
 		Optional<Quote> quoteOpt = quotes.findById(id);
@@ -87,8 +103,9 @@ public class QuoteController {
 			Quote quote = quoteOpt.get();
 			quote.setContent(content);
 			quotes.save(quote);
+			return quote;
 		}
-		return quoteOpt.get();
+		return null;
 	}
 	
 	@PutMapping("/quotes/{id}/edit/upvote")

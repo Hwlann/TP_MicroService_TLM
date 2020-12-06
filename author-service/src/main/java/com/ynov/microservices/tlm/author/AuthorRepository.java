@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 
 public interface AuthorRepository extends CrudRepository<Author, Integer> {
 	
-	@Query("SELECT DISTINCT author FROM Author author WHERE author.pseudo LIKE :pseudo%")
+	@Query("SELECT DISTINCT authors FROM Author authors WHERE authors.pseudo LIKE :pseudo%")
 	@Transactional(readOnly = true)
 	Collection<Author> findByPseudo(@Param("pseudo") String pseudo);
 }

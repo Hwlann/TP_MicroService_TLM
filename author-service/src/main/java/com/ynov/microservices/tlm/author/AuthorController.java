@@ -1,9 +1,9 @@
 package com.ynov.microservices.tlm.author;
 
 
+import java.util.Collection;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,16 +18,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class AuthorController {
 
 	/******************************************** VARIABLES ********************************************/
-	@Autowired
 	private AuthorRepository authors;
 	
 	/******************************************** CONTRUCTOR *******************************************/
 	public AuthorController(AuthorRepository authors) {
 		this.authors = authors;
 		
-		// Create anonymous Author with id = 0;
+		// Create anonymous Author
 		Author author = new Author();
-		author.setId(0);
+		author.setId(1);
 		author.setPseudo("Anonymous");
 		authors.save(author);
 	}
@@ -45,7 +44,7 @@ public class AuthorController {
 			return authors.findById(id);
 	}
 	
-	@GetMapping("/authors/findByPseudo/{pseudo}")
+	@GetMapping("/authors/pseudo/{pseudo}")
 	public Iterable<Author> findByPseudo(@PathVariable("pseudo") String pseudo) throws InterruptedException {
 		return authors.findByPseudo(pseudo);
 	}
@@ -56,6 +55,13 @@ public class AuthorController {
 	@PostMapping("/authors/new")
 	public Author addAuthor(@RequestParam("pseudo") String pseudo){
 			Author author = new Author();
+			Collection<Author> quoteList = (Collection<Author>) authors.findAll();
+			if(quoteList.isEmpty()) {
+				author.setId(1);
+			}
+			else {
+				author.setId(quoteList.size()+1);
+			}
 			author.setPseudo(pseudo);
 			return authors.save(author);
 	}
@@ -65,21 +71,23 @@ public class AuthorController {
 			return authors.save(author);
 	}
 	
-	@PostMapping("/authors/{authorId}/addQuote")
-	public void addQuoteToAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("quoteId") Integer quoteId) {
+	@PostMapping("/authors/{authorId}/add-quote")
+	public Author addQuoteToAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("quoteId") Integer quoteId) {
 		Optional<Author> authorOpt = authors.findById(authorId);
 		if (authorOpt.isPresent()) {
 			Author author = authorOpt.get();
 			author.addQuote(quoteId);
 			authors.save(author);
+			return author;
 		}		
+		return null;
 	}
 	
 	/****************************************************************************************************/
 	/******************************************** DELETE MAPPING ****************************************/
 	/****************************************************************************************************/
-	@DeleteMapping("/authors/remove")
-	public void deleteAuthor(@RequestParam("id") Integer id){
+	@DeleteMapping("/authors/{id}")
+	public void deleteAuthor(@PathVariable("id") Integer id){
 			authors.deleteById(id);
 	}
 	

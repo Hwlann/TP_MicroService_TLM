@@ -1,7 +1,6 @@
 package com.ynov.microservices.tlm.author;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,24 +37,26 @@ public class AuthorController {
 	/******************************************** GET MAPPING *******************************************/
 	/****************************************************************************************************/
 	@GetMapping("/authors")
-	public String findAuthors(Map<String, Object> model ) {
-		Collection<Author> results = this.authors.findAll();
-		model.put("selections", results);
-		return "redirect:/authors";
+	public Iterable<Author> findAuthors() {
+		return authors.findAll();			
 	}
 	
-	@GetMapping("/authors/{authorId}/quotes")
-	public String findAuthorsQuotes() {
-		
-		return"";
+	@GetMapping("/authors/{id}")
+	public Author findAuthors(@PathVariable("id") Integer id) {
+		return authors.findById(id);	
+	}
+	
+	@GetMapping("/authors/pseudo/{pseudo}")
+	public Collection<Author> findAuthorsByPseudo(@PathVariable("pseudo") String pseudo) {
+		return authors.findByPseudo(pseudo);
 	}
 	
 	/****************************************************************************************************/
 	/******************************************** POST MAPPING ******************************************/
-	/****************************************************************************************************/	
+	/****************************************************************************************************/
 	@PostMapping("/authors/new")
 	public String addAuthor(@RequestParam("pseudo") String pseudo) {
-		Collection<Author> authorList = authors.findAll();
+		Collection<Author> authorList = (Collection<Author>) authors.findAll();
 		
 		Author author = new Author();
 		author.setPseudo(pseudo);
@@ -66,7 +67,7 @@ public class AuthorController {
 			author.setId(authorList.size()+1);
 		}
 		this.authors.save(author);
-	return "redirect:/authors/" + author.getId();
+	return "redirect:/authors";
 	}
 	
 	@PostMapping("/authors/{authorId}/edit")
@@ -80,8 +81,8 @@ public class AuthorController {
 	/****************************************************************************************************/
 	/******************************************** DELETE MAPPING ****************************************/
 	/****************************************************************************************************/
-	@DeleteMapping("authors/remove")
-	public String deleteAuthor(@RequestParam("id") Integer id) {
+	@DeleteMapping("authors/{id}")
+	public String deleteAuthor(@PathVariable("id") Integer id) {
 		authors.deleteById(id);
 		return null;		
 	}
