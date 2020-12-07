@@ -19,7 +19,9 @@ public class Author {
 	@Column(name = "pseudo")
 	private String pseudo;
 	@Column
-	private HashSet<Integer> quotes;	
+	private HashSet<Integer> quotes;
+	@Column
+	private HashSet<Integer> comments;	
 	
 	/****************************************************************************************************/
 	/******************************************** METHODS ***********************************************/
@@ -35,6 +37,18 @@ public class Author {
 
 	public void addQuote(Integer quoteId) {
 			getQuotes().add(quoteId);
+	}
+	
+	/******************************************** COMMENTS ************************************************/
+	public HashSet<Integer> getComments() {
+		if (this.comments == null) {
+			this.comments = new LinkedHashSet<>();
+		}
+		return this.comments;
+	}
+
+	public void addComment(Integer commentId) {
+		getComments().add(commentId);
 	}
 	
 	/******************************************** ID *****************************************************/

@@ -22,7 +22,7 @@ public class Comment {
 	@Column
 	private String content;
 	@Column
-	private String author;
+	private Integer author;
 	@Column
 	private Integer quote;	
 	
@@ -62,10 +62,10 @@ public class Comment {
 	}
 	
 	/******************************************** AUTHOR **************************************************/	
-	public String getAuthor() {
+	public Integer getAuthor() {
 		return author;
 	}
-	public void setAuthor(String author) {
+	public void setAuthor(Integer author) {
 		this.author = author;
 	}
 	

@@ -76,12 +76,24 @@ public class AuthorController {
 			return authors.save(author);
 	}
 	
-	@PostMapping("/authors/{authorId}/add-quote")
+	@PostMapping("/authors/{authorId}/add/quote")
 	public Author addQuoteToAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("quoteId") Integer quoteId) {
 		Optional<Author> authorOpt = authors.findById(authorId);
 		if (authorOpt.isPresent()) {
 			Author author = authorOpt.get();
 			author.addQuote(quoteId);
+			authors.save(author);
+			return author;
+		}		
+		return null;
+	}
+	
+	@PostMapping("/authors/{authorId}/add/comment")
+	public Author addCommentToAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("commentId") Integer commentId) {
+		Optional<Author> authorOpt = authors.findById(authorId);
+		if (authorOpt.isPresent()) {
+			Author author = authorOpt.get();
+			author.addComment(commentId);
 			authors.save(author);
 			return author;
 		}		

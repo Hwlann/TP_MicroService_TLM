@@ -25,13 +25,13 @@ public class CommentController {
 		
 		Comment comment = new Comment();
 		comment.setId(1);
-		comment.setAuthor("César");
+		comment.setAuthor(0);
 		comment.setContent("RTFM");
 		comment.setQuote(0);
 		comments.save(comment);
 		
 		comment.setId(2);
-		comment.setAuthor("Loïc");
+		comment.setAuthor(0);
 		comment.setContent("RTFM");
 		comment.setQuote(0);
 		comments.save(comment);		
@@ -64,7 +64,7 @@ public class CommentController {
 	/******************************************** POST MAPPING ******************************************/
 	/****************************************************************************************************/
 	@PostMapping("/comments/new")
-	public Comment addComment(@RequestParam("author") String author, @RequestParam("content") String content) {
+	public Comment addComment(@RequestParam("content") String content) {
 		Comment comment = new Comment();
 		Collection<Comment> commentList = (Collection<Comment>) comments.findAll();
 		if(commentList.isEmpty()) {
@@ -73,12 +73,7 @@ public class CommentController {
 		else {
 			comment.setId(commentList.size()+1);
 		}
-		if(!StringUtils.hasLength(author)) {
-			comment.setAuthor("Anonymous");	
-		}
-		else {
-			comment.setAuthor(author);
-		}
+		comment.setAuthor(0);
 		comment.setContent(content);
 		comment.setQuote(0);
 		return comments.save(comment);

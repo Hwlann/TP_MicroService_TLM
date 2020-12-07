@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AuthorRepository {
 	@GetMapping("/authors/pseudo/{pseudo}")
 	Collection<Author> findByPseudo(@PathVariable("pseudo") String pseudo);
+
+	@GetMapping("/authors/exact-pseudo/{pseudo}")
+	Optional<Author> findPseudo(@PathVariable("pseudo") String pseudo);
 	
 	@GetMapping("/authors")
 	Iterable<Author> findAll();
@@ -26,8 +29,5 @@ public interface AuthorRepository {
 	void save(@RequestBody Author author);
 	
 	@DeleteMapping("/authors/{id}")
-	void deleteById(@RequestParam("id") Integer id);
-	
-	@GetMapping("/authors/exact-pseudo/{pseudo}")
-	Optional<Author> findPseudo(@PathVariable("pseudo") String pseudo);
+	void deleteById(@RequestParam("id") Integer id);	
 }

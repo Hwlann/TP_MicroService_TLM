@@ -84,26 +84,14 @@ public class Quote {
 	}
 	
 	/******************************************** COMMENTS **************************************************/
-	/*
-	public Set<Integer> getCommentsInternal() {
+	public HashSet<Integer> getComments() {
 		if (this.comments == null) {
-			this.comments = new HashSet<>();
+			this.comments = new LinkedHashSet<>();
 		}
 		return this.comments;
 	}
-	public void setCommentsInternal(Collection<Comment> comments) {
-		this.comments = new LinkedHashSet<>(comments);
-	}	
-	
-	public List<Comment> getComments() {
-		List<Comment> sortedComments = new ArrayList<>(getCommentsInternal());
-		PropertyComparator.sort(sortedComments, new MutableSortDefinition("date", false, false));
-		return Collections.unmodifiableList(sortedComments);
-	}
 
-	public void addComment(Comment comment) {
-		getCommentsInternal().add(comment);
-		comment.setQuote(this.getId());
+	public void addComment(Integer commentId) {
+		getComments().add(commentId);
 	}
-	*/
 }
