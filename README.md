@@ -44,3 +44,12 @@
 - /quotes/{id}/edit/downvote
 #### DELETE
 - /quotes/{id}
+
+### Comments
+#### GET
+- /comments
+- /comments/{id}
+- /comments/quote/{quoteId}
+- /comments/author/{author}
+#### DELETE
+- /comments/{id}
