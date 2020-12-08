@@ -12,4 +12,8 @@ public interface QuoteRepository extends CrudRepository<Quote, Integer> {
 	@Query("SELECT quotes FROM Quote quotes WHERE quotes.author = :author")
 	@Transactional(readOnly = true)
 	Collection<Quote> findByAuthor(@Param("author") Integer author);
+	
+	@Query("SELECT quotes FROM Quote quotes ORDER BY quotes.upVote DESC")
+	@Transactional(readOnly = true)
+	Collection<Quote> getTrending();
 }

@@ -21,21 +21,26 @@ public class CommentController {
 	/****************************************************************************************************/
 	/******************************************** GET MAPPING *******************************************/
 	/****************************************************************************************************/
+	
+	/******************************************** GET COMMENT *******************************************/
 	@GetMapping("/comments")
 	public Iterable<Comment> getComments() {
 		return comments.findAll();
 	}
 
+	/******************************************** GET COMMENT BY ID *******************************************/
 	@GetMapping("/comments/{id}")
 	public Optional<Comment> getCommentById(@PathVariable("id") Integer id) {
 		return comments.findById(id);
 	}
 	
+	/******************************************** GET COMMENT BY QUOTE *******************************************/
 	@GetMapping("/comments/quotes/{quote}")
 	public Iterable<Comment> getCommentByQuote(@PathVariable("quote") Integer quote) {
 		return comments.findByQuote(quote);
 	}
 	
+	/******************************************** GET COMMENT BY QUOTE *******************************************/
 	@GetMapping("/comments/author/{author}")
 	public Iterable<Comment> getCommentByQuote(@PathVariable("author") String author) {
 		return comments.findByAuthor(author);

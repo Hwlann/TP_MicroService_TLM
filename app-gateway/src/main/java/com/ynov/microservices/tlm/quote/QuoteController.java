@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -59,8 +60,14 @@ public class QuoteController {
 	@HystrixCommand
 	public Iterable<Quote> findQuoteByPseudo(@PathVariable("id") Integer author) {
 		return quotes.findByAuthor(author);			
-	}	
+	}
 	
+	@GetMapping("/quotes/trending")
+	@HystrixCommand
+	public Collection<Quote> getTrendings() {
+		return quotes.getTrending();
+	}
+		
 	/****************************************************************************************************/
 	/******************************************** POST MAPPING ******************************************/
 	/****************************************************************************************************/
@@ -136,29 +143,31 @@ public class QuoteController {
 			author.setId(authorFullList.size()+1);
 			authorId = author.getId();
 		}
+		
 		// QUOTE
 		Optional<Quote> quoteOpt = quotes.findById(id);
 		if (quoteOpt.isPresent()) {
 			quote = quoteOpt.get();
 			quoteId = quote.getId();
+
+			// COMMENT
+			if(commentList.isEmpty()) {
+				comment.setId(1);
+			}
+			else {
+				comment.setId(commentList.size()+1);
+			}			
+			comment.setContent(content);
+			comment.setAuthor(authorId);
+			comment.setQuote(quoteId);
+			
+			author.addComment(comment.getId());
+			quote.addComment(comment.getId());
+			
+			this.quotes.save(quote);
+			this.authors.save(author);
+			this.comments.save(comment);			
 		}
-		// COMMENT
-		if(commentList.isEmpty()) {
-			comment.setId(1);
-		}
-		else {
-			comment.setId(commentList.size()+1);
-		}
-		comment.setContent(content);
-		comment.setAuthor(authorId);
-		comment.setQuote(quoteId);
-		
-		author.addComment(comment.getId());
-		quote.addComment(comment.getId());
-		
-		this.quotes.save(quote);
-		this.authors.save(author);
-		this.comments.save(comment);
 		return null;
 	}
 	
@@ -200,5 +209,15 @@ public class QuoteController {
 			quotes.save(quote);
 		}
 		return quoteOpt.get();
-	}	
+	}
+	
+	/****************************************************************************************************/
+	/******************************************** DELETE MAPPING ****************************************/
+	/****************************************************************************************************/
+	@DeleteMapping("quotes/{id}")
+	@HystrixCommand
+	public String deleteQuote(@PathVariable("id") Integer id) {
+		authors.deleteById(id);
+		return null;		
+	}
 }

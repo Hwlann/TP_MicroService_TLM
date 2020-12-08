@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+
 @RestController
 @RequestMapping("/")
 public class CommentController {
@@ -37,25 +39,32 @@ public class CommentController {
 		comments.save(comment);		
 	}
 	
-	/****************************************************************************************************/
+	/*
+	 *  Annotation @HystrixCommand on App-gateway's CommentRepository's methods
+	 */
+		/****************************************************************************************************/
 	/******************************************** GET MAPPING *******************************************/
 	/****************************************************************************************************/	
 	@GetMapping("/comments")
+	@HystrixCommand
 	public Iterable<Comment> getComments() {
 		return comments.findAll();
 	}
 
 	@GetMapping("/comments/{id}")
+	@HystrixCommand
 	public Optional<Comment> getCommentById(@PathVariable("id") Integer id) {
 		return comments.findById(id);
 	}
 	
 	@GetMapping("/comments/quotes/{quote}")
+	@HystrixCommand
 	public Iterable<Comment> getCommentByQuote(@PathVariable("quote") Integer quote) {
 		return comments.findByQuote(quote);
 	}
 	
 	@GetMapping("/comments/author/{author}")
+	@HystrixCommand
 	public Iterable<Comment> getCommentByQuote(@PathVariable("author") String author) {
 		return comments.findByAuthor(author);
 	}
@@ -65,6 +74,7 @@ public class CommentController {
 	/****************************************************************************************************/
 	@PostMapping("/comments/new")
 	public Comment addComment(@RequestParam("content") String content) {
+		if(!StringUtils.hasLength(content)) return null;
 		Comment comment = new Comment();
 		Collection<Comment> commentList = (Collection<Comment>) comments.findAll();
 		if(commentList.isEmpty()) {
@@ -80,6 +90,7 @@ public class CommentController {
 	}
 	
 	@PostMapping("/comments/")
+	@HystrixCommand
 	public Comment save(@RequestBody Comment comment){
 			return comments.save(comment);
 	}
@@ -88,7 +99,9 @@ public class CommentController {
 	/******************************************** PUT MAPPING ******************************************/
 	/****************************************************************************************************/
 	@PutMapping("/comments/{id}/edit")
+	@HystrixCommand
 	public Comment editComment(@PathVariable("id") Integer id, @RequestParam("content") String content) {
+		if(!StringUtils.hasLength(content)) return null;
 		Optional<Comment> commentOpt = comments.findById(id);
 		if (commentOpt.isPresent()) {
 			Comment comment = commentOpt.get();
@@ -102,6 +115,7 @@ public class CommentController {
 	/******************************************** DELETE MAPPING ****************************************/
 	/****************************************************************************************************/
 	@DeleteMapping("/comments/{id}")
+	@HystrixCommand
 	public void deleteVisit(@PathVariable("id") Integer id) {
 		comments.deleteById(id);
 	}
