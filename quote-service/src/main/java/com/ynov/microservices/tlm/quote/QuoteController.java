@@ -75,10 +75,10 @@ public class QuoteController {
 		Iterator<Quote> iter = quotesIter.iterator();
 		ArrayList<Quote> topTen = new ArrayList<Quote>();
 		int i = 0 ;
-		for(Quote quote : quotesIter) {
+		while(iter.hasNext()) {
 			if(i < 10) topTen.add(iter.next());
 			i++;
-		}		
+		}	
 		return quotes.getTrending();
 	}
 	
@@ -168,6 +168,9 @@ public class QuoteController {
 	@DeleteMapping("/quotes/{id}")
 	@HystrixCommand
 	public void deleteQuote(@PathVariable("id") Integer id) {
-		quotes.deleteById(id);
+		Optional<Quote> quoteOpt = quotes.findById(id);
+		if(!quoteOpt.isEmpty()) {
+			quotes.deleteById(quoteOpt.get().getId());
+		}		
 	}
 }

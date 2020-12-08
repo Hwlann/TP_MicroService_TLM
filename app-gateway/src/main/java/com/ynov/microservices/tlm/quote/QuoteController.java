@@ -1,9 +1,9 @@
 package com.ynov.microservices.tlm.quote;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Optional;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ynov.microservices.tlm.author.Author;
@@ -20,7 +21,7 @@ import com.ynov.microservices.tlm.author.AuthorRepository;
 import com.ynov.microservices.tlm.comment.Comment;
 import com.ynov.microservices.tlm.comment.CommentRepository;
 
-@Controller
+@RestController
 public class QuoteController {
 	
 	/******************************************** VARIABLES **************************************************/
@@ -33,12 +34,6 @@ public class QuoteController {
 		this.quotes = quotes;
 		this.authors = authors;
 		this.comments = comments;
-	}
-
-	/******************************************** BINDER ****************************************************/
-	@InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
 	}
 	
 	/****************************************************************************************************/
@@ -73,7 +68,7 @@ public class QuoteController {
 	/****************************************************************************************************/
 	@PostMapping("/quotes/new")
 	@HystrixCommand
-	public String addQuote(@RequestParam("pseudo") String pseudo, @RequestParam("content") String content) {
+	public Quote addQuote(@RequestParam("pseudo") String pseudo, @RequestParam("content") String content) {
 		// REPO
 		if(!StringUtils.hasLength(content)) return null;
 		if(!StringUtils.hasLength(pseudo)) return null;
@@ -111,12 +106,12 @@ public class QuoteController {
 		author.addQuote(quote.getId());
 		this.authors.save(author);
 		this.quotes.save(quote);
-	return "redirect:/quotes";
+		return quote;
 	}
 	
 	@PostMapping("/quotes/{id}/add-comment")
 	@HystrixCommand
-	public String addComment(@PathVariable("id") Integer id, @RequestParam("pseudo") String pseudo, @RequestParam("content") String content) {
+	public Comment addComment(@PathVariable("id") Integer id, @RequestParam("pseudo") String pseudo, @RequestParam("content") String content) {
 		
 		Collection<Comment> commentList = (Collection<Comment>) comments.findAll();
 		Collection<Author> authorFullList = (Collection<Author>) authors.findAll();
@@ -166,7 +161,8 @@ public class QuoteController {
 			
 			this.quotes.save(quote);
 			this.authors.save(author);
-			this.comments.save(comment);			
+			this.comments.save(comment);		
+			return comment;
 		}
 		return null;
 	}
@@ -216,8 +212,12 @@ public class QuoteController {
 	/****************************************************************************************************/
 	@DeleteMapping("quotes/{id}")
 	@HystrixCommand
-	public String deleteQuote(@PathVariable("id") Integer id) {
+	public void deleteQuote(@PathVariable("id") Integer id) {
 		authors.deleteById(id);
-		return null;		
+		Iterable<Comment> commentList = comments.findByQuote(id);
+		Iterator<Comment> iter = commentList.iterator();
+		while(iter.hasNext()) {
+			comments.deleteById(iter.next().getId());
+		}	
 	}
 }

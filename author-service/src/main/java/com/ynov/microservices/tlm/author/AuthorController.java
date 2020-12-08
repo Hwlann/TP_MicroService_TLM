@@ -28,11 +28,13 @@ public class AuthorController {
 	public AuthorController(AuthorRepository authors) {
 		this.authors = authors;
 		
+		/*
 		// Create anonymous Author
 		Author author = new Author();
 		author.setId(1);
 		author.setPseudo("Anonymous");
 		authors.save(author);
+		*/
 	}
 	
 	/*
@@ -73,12 +75,12 @@ public class AuthorController {
 	public Author addAuthor(@RequestParam("pseudo") String pseudo){
 			if(!StringUtils.hasLength(pseudo)) return null;
 			Author author = new Author();
-			Collection<Author> quoteList = (Collection<Author>) authors.findAll();
-			if(quoteList.isEmpty()) {
+			Collection<Author> authorList = (Collection<Author>) authors.findAll();
+			if(authorList.isEmpty()) {
 				author.setId(1);
 			}
 			else {
-				author.setId(quoteList.size()+1);
+				author.setId(authorList.size()+1);
 			}
 			author.setPseudo(pseudo);
 			return authors.save(author);
@@ -123,7 +125,10 @@ public class AuthorController {
 	@DeleteMapping("/authors/{id}")
 	@HystrixCommand
 	public void deleteAuthor(@PathVariable("id") Integer id){
-			authors.deleteById(id);
+		Optional<Author> authorOpt = authors.findById(id);
+		if(!authorOpt.isEmpty()) {
+			authors.deleteById(authorOpt.get().getId());
+		}
 	}
 	
 }

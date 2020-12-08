@@ -117,6 +117,9 @@ public class CommentController {
 	@DeleteMapping("/comments/{id}")
 	@HystrixCommand
 	public void deleteVisit(@PathVariable("id") Integer id) {
-		comments.deleteById(id);
+		Optional<Comment> commentOpt = comments.findById(id);
+		if(!commentOpt.isEmpty()) {
+			comments.deleteById(commentOpt.get().getId());
+		}
 	}
 }

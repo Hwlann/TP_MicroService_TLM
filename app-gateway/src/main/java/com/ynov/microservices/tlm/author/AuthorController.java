@@ -1,28 +1,25 @@
 package com.ynov.microservices.tlm.author;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.ynov.microservices.pojo.AuthorDetailsPojo;
 import com.ynov.microservices.pojo.AuthorInfoPojo;
-import com.ynov.microservices.pojo.AuthorPojo;
 import com.ynov.microservices.tlm.quote.Quote;
 import com.ynov.microservices.tlm.quote.QuoteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Controller
+@RestController
 public class AuthorController {
 
 	/******************************************** VARIABLES ********************************************/
@@ -36,12 +33,6 @@ public class AuthorController {
 		this.quotes = quotes;
 	}
 	
-	/****************************************** BINDER **************************************************/
-	@InitBinder
-	public void setAllowedFields(WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
-	
 	/****************************************************************************************************/
 	/******************************************** GET MAPPING *******************************************/
 	/****************************************************************************************************/
@@ -49,23 +40,14 @@ public class AuthorController {
 	/******************************************** FIND AUTHORS *******************************************/
 	@GetMapping("/authors")
 	@HystrixCommand
-	public String findAuthors() {
-		Iterator<Author> authorIter = authors.findAll().iterator();
-		ArrayList<AuthorPojo> authorsInfos = new ArrayList<AuthorPojo>();
-		AuthorPojo authorPojo = new AuthorPojo();
-		while(authorIter.hasNext()) {
-			authorPojo.setPseudo(authorIter.next().getPseudo());
-			authorPojo.setComments(authorIter.next().getComments());
-			authorPojo.setQuotes(authorIter.next().getQuotes());
-			authorsInfos.add(authorPojo);
-		}		
-		return authorsInfos.toString();		
+	public Iterable<Author> findAuthors() {		
+		return authors.findAll();	
 	}
 	
 	/******************************************** AUTHORS DETAILS  *******************************************/
 	@GetMapping("/authors/{id}/details")
 	@HystrixCommand
-	public String authorsDetails(@PathVariable("id") Integer id) {
+	public AuthorDetailsPojo authorsDetails(@PathVariable("id") Integer id) {
 		Author author = authors.findById(id);
 		if(author != null) {
 			AuthorDetailsPojo authorDetailsPojo = new AuthorDetailsPojo();
@@ -73,8 +55,8 @@ public class AuthorController {
 			Iterator<Quote> quoteIter = quotes.findByAuthor(id).iterator();	
 			while(quoteIter.hasNext()) {
 				authorDetailsPojo.addQuote(quoteIter.next().getContent());
-			}
-			return authorDetailsPojo.toString();
+			}			
+			return authorDetailsPojo;
 		}			
 		return null;		
 	}
@@ -82,17 +64,8 @@ public class AuthorController {
 	/******************************************** FIND BY AUTHOR ID *******************************************/
 	@GetMapping("/authors/{id}")
 	@HystrixCommand
-	public String findAuthorsById(@PathVariable("id") Integer id) {
-		AuthorPojo authorPojo = new AuthorPojo();
-		Author author = authors.findById(id);
-		if(author != null) {
-			authorPojo.setId(author.getId());
-			authorPojo.setPseudo(author.getPseudo());
-			authorPojo.setQuotes(author.getQuotes());
-			authorPojo.setComments(author.getComments());
-			return authorPojo.toString();			
-		}
-		return null;
+	public Author findAuthorsById(@PathVariable("id") Integer id) {
+		return authors.findById(id);
 	}
 	
 	/******************************************** FIND BY AUTHOR PSEUDO  *******************************/
@@ -115,11 +88,12 @@ public class AuthorController {
 			Collection<Quote> quoteList = quotes.findByAuthor(id);
 			Iterator<Quote> iter = quoteList.iterator();
 			while(iter.hasNext()) {
-				upVote += iter.next().getUpVote();
-				downVote += iter.next().getDownVote();
+				Quote quote = iter.next();
+				upVote += quote.getUpVote();
+				downVote += quote.getDownVote();
 			}
 			authorInfo.setAvgUpvote(upVote/quoteList.size());
-			authorInfo.setAvgUpvote(downVote/quoteList.size());
+			authorInfo.setAvgDownvote(downVote/quoteList.size());
 			return authorInfo;			
 		}
 		return null;
@@ -132,28 +106,32 @@ public class AuthorController {
 	/******************************************** ADD AUTHOR *******************************************/
 	@PostMapping("/authors/new")
 	@HystrixCommand
-	public String addAuthor(@RequestParam("pseudo") String pseudo) {
-		Collection<Author> authorList = (Collection<Author>) authors.findAll();		
-		Author author = new Author();
-		author.setPseudo(pseudo);
-		if(authorList.isEmpty()) {
-			author.setId(1);
+	public Author addAuthor(@RequestParam("pseudo") String pseudo) {		
+		Optional<Author> authorOpt = authors.findPseudo(pseudo);
+	 	if(authorOpt.isEmpty()) {
+			Collection<Author> authorList = (Collection<Author>) authors.findAll();
+	 		Author author = new Author();
+			author.setPseudo(pseudo);
+			if(authorList.isEmpty()) {
+				author.setId(1);
+			}
+			else {
+				author.setId(authorList.size()+1);
+			}			
+			this.authors.save(author);
+			return author;
 		}
-		else {
-			author.setId(authorList.size()+1);
-		}
-		this.authors.save(author);
-	return "redirect:/authors/" + author.getId();
+	return null;
 	}
 	
 	/******************************************** UPDATE AUTHOR *******************************************/
 	@PostMapping("/authors/{authorId}/edit")
 	@HystrixCommand
-	public String updateAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("pseudo") String pseudo) {
+	public Author updateAuthor(@PathVariable("authorId") Integer authorId, @RequestParam("pseudo") String pseudo) {
 		Author author = authors.findById(authorId);
 		author.setPseudo(pseudo);
 		authors.save(author);
-		return "redirect:/authors/" + authorId;			
+		return author;			
 	}
 	
 	/****************************************************************************************************/
@@ -161,9 +139,8 @@ public class AuthorController {
 	/****************************************************************************************************/
 	@DeleteMapping("authors/{id}")
 	@HystrixCommand
-	public String deleteAuthor(@PathVariable("id") Integer id) {
-		authors.deleteById(id);
-		return null;		
+	public void deleteAuthor(@PathVariable("id") Integer id) {
+		authors.deleteById(id);		
 	}
 	
 }

@@ -24,6 +24,5 @@ public class AuthorDetailsPojo {
 
 	public void addQuote(String quote) {
 		quoteList.add(quote);
-	}
-	
+	}	
 }
