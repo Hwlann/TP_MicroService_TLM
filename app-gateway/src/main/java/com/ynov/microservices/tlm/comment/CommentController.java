@@ -54,8 +54,7 @@ public class CommentController {
 	/******************************************** DELETE MAPPING ****************************************/
 	/****************************************************************************************************/	
 	@DeleteMapping("/comments/{id}")
-	public String deleteComment(@PathVariable("id") Integer id) {
+	public void deleteComment(@PathVariable("id") Integer id) {
 		comments.deleteById(id);
-		return null;	
 	}
 }
