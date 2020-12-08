@@ -13,7 +13,6 @@
 ## App-Gateway:
 ### Authors
 #### GET
-#### GET
 - /authors
 - /authors/{id}
 - /authors/pseudo/{pseudo}
